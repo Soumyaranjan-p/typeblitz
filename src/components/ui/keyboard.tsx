@@ -46,7 +46,7 @@ import { toast } from "sonner";
 
 export type KeyboardEventSource = "physical" | "pointer";
 export type KeyboardEventPhase = "down" | "up";
-export type KeyboardThemeName = "classic" | "mint" | "royal" | "dolch" | "sand" | "scarlet";
+export type KeyboardThemeName = "classic" | "mint" | "royal" | "dolch" | "sand" | "scarlet" | "aurora";
 
 export interface KeyboardInteractionEvent {
   code: string;
@@ -75,7 +75,7 @@ export interface KeyboardProps {
 
 export function Keyboard({
   className,
-  theme = "classic",
+  theme = "aurora",
   enableSound = true,
   enableHaptics = true,
   soundUrl = "/sounds/sound.ogg",
@@ -519,9 +519,10 @@ function KeyboardKeys() {
 
   return (
     <div>
-      <div className="w-fit rounded-[16px] border-2 border-black bg-black/70 p-3 h-fit dark:border-white/20 dark:bg-white/20">
-        <div className="h-[278px] rounded-[5px] rounded-t-[8px] border border-black bg-black/80 dark:border-zinc-500 dark:bg-zinc-700">
-          <div className="-space-y-1 -translate-y-1 rounded-[5px] overflow-hidden">
+      <div className="relative w-fit rounded-[20px] border border-border/30 bg-background/40 p-3 h-fit shadow-2xl backdrop-blur-xl dark:border-white/10 dark:bg-black/40 overflow-hidden group transition-all duration-500 hover:shadow-[0_0_80px_-20px_rgba(var(--color-primary),0.3)]">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/5 opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="relative h-[278px] rounded-[6px] rounded-t-[10px] border border-border/40 bg-zinc-100/50 shadow-inner dark:border-white/5 dark:bg-black/60">
+          <div className="-space-y-1 -translate-y-1 rounded-[6px] overflow-hidden">
             <Row>
               <Key keyCode={KEYCODE.Escape}>
                 {"esc"}
@@ -1103,6 +1104,17 @@ const KEYBOARD_THEMES: Record<KeyboardThemeName, KeyboardThemeDefinition> = {
     },
     keyVariantOverrides: buildKeyVariantOverrides({
       accent: [KEYCODE.Escape, KEYCODE.Enter],
+      dark: MINT_DARK_KEYS,
+    }),
+  },
+  aurora: {
+    variants: {
+      accent: { bg: "#00FFF5", text: "#09090B" },
+      dark: { bg: "#1A1A2E", text: "#E94560" },
+      light: { bg: "#16213E", text: "#00FFF5" },
+    },
+    keyVariantOverrides: buildKeyVariantOverrides({
+      accent: [KEYCODE.Escape, KEYCODE.Enter, KEYCODE.Space],
       dark: MINT_DARK_KEYS,
     }),
   },

@@ -31,7 +31,7 @@ export default function RootLayout({
       className={cn("antialiased", fontMono.variable, "font-sans", spaceGrotesk.variable, doto.variable)}
     >  
      
-      <body>
+      <body  suppressHydrationWarning>
         <Toaster/>
         <noscript>
           <iframe
