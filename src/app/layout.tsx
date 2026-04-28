@@ -8,7 +8,6 @@ import { SettingsProvider } from "@/components/settings-context"
 import { cn } from "@/lib/utils"
 import type { Metadata } from "next";
 const spaceGrotesk = Space_Grotesk({subsets:['latin'],variable:'--font-sans'})
-
 const doto = Doto({ subsets: ['latin'], variable: '--font-doto' })
 
 const fontMono = Geist_Mono({
