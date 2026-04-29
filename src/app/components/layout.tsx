@@ -1,7 +1,6 @@
 
 import { Doto, Geist_Mono, Space_Grotesk } from "next/font/google"
 import { Toaster } from "@/components/ui/sonner"
-import "./globals.css"
 import { AppChrome } from "@/components/app-chrome"
 import { ThemeProvider } from "@/components/theme-provider"
 import { SettingsProvider } from "@/components/settings-context"

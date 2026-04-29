@@ -1,5 +1,4 @@
 
-import {  Space_Grotesk } from "next/font/google"
 import { Toaster } from "@/components/ui/sonner"
 import "./globals.css"
 import { AppChrome } from "@/components/app-chrome"
