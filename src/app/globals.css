@@ -47,6 +47,63 @@
 }
 
 :root {
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+}
+
+/* Base */
+body {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+}
+
+/* Headings */
+h1 {
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+h2 {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+h3 {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+/* Small UI text */
+.text-muted {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+/* Buttons */
+.button-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Logo */
+.logo {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+/* Typing area */
+.typing-text {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+}
+:root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
   --card: oklch(1 0 0);

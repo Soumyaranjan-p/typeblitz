@@ -14,13 +14,9 @@ import { useMountEffect } from "@/hooks/use-mount-effect"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { motion } from "motion/react"
-import { IconInfoCircle, IconNotes, IconSettings } from "@tabler/icons-react"
-import { GithubLogo } from "@phosphor-icons/react"
 
-import { CornerBrackets } from "@/components/corner-brackets"
 import { DynamicFavicon } from "@/components/dynamic-favicon"
 import { SettingsPanel } from "@/components/settings-panel"
-import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { useClickSound } from "@/hooks/use-click-sound"
 
@@ -119,26 +115,26 @@ export function AppChrome({ children }: { children: ReactNode }) {
 function SiteHeader() {
   const pathname = usePathname()
   const router = useRouter()
-  const { setSettingsOpen, typingActive, setTypingActive, homeLogoHandlerRef } =
-    useAppChrome()
+  const { typingActive, homeLogoHandlerRef } = useAppChrome()
 
   const isHome = pathname === "/"
   const dimHeader = isHome && typingActive
 
-  
   const [mouseHeaderVisible, setMouseHeaderVisible] = useState(false)
   const headerTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-
-  const headerVisible = !isHome || !typingActive || (isHome && typingActive && mouseHeaderVisible)
+  const headerVisible =
+    !isHome || !typingActive || (isHome && typingActive && mouseHeaderVisible)
 
   const handleHeaderMouseMove = useCallback(() => {
     if (!isHome || !typingActive) return
     setMouseHeaderVisible(true)
     if (headerTimerRef.current) clearTimeout(headerTimerRef.current)
-    headerTimerRef.current = setTimeout(() => setMouseHeaderVisible(false), 2500)
+    headerTimerRef.current = setTimeout(
+      () => setMouseHeaderVisible(false),
+      2500,
+    )
   }, [isHome, typingActive])
-
 
   useMountEffect(() => {
     return () => {
@@ -154,9 +150,6 @@ function SiteHeader() {
     router.push("/")
   }
 
-  const iconButtonClass =
-    "rounded-lg p-1.5 text-muted-foreground transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-
   return (
     <motion.header
       animate={{ opacity: dimHeader ? (headerVisible ? 1 : 0.1) : 1 }}
@@ -165,57 +158,39 @@ function SiteHeader() {
       className="flex shrink-0 justify-center border-b border-border px-6 py-3"
     >
       <div className="flex w-full max-w-5xl items-center justify-between">
-      <div className="flex items-center gap-3">
-        {isHome ? (
-          <button
-            type="button"
-            onClick={handleLogoClick}
-            className="cursor-pointer font-(family-name:--font-doto) text-xl font-bold text-primary"
-          >
+
+        {/* Left - Logo */}
+        <div className="flex items-center gap-3">
+          {isHome ? (
+            <button
+              type="button"
+              onClick={handleLogoClick}
+              className="cursor-pointer font-(family-name:--font-doto) text-xl font-bold text-primary"
+            >
               TypeBlitz
-          </button>
-        ) : (
-          <Link
-            href="/"
-            className="font-(family-name:--font-doto) text-xl font-bold text-primary"
-          >
-            TypeBlitz
-          </Link>
-        )}
-        <div className="flex items-center gap-0.5">
+            </button>
+          ) : (
+            <Link
+              href="/"
+              className="font-(family-name:--font-doto) text-xl font-bold text-primary"
+            >
+              TypeBlitz
+            </Link>
+          )}
+        </div>
+
+        {/* Right - Navigation */}
+        <div className="flex items-center gap-6 text-sm text-muted-foreground">
           <Link
             href="/about"
-            prefetch
             className={cn(
-              iconButtonClass,
-              pathname === "/about" && "text-foreground",
+              "hover:text-foreground transition-colors",
+              pathname === "/about" && "text-foreground"
             )}
-            aria-current={pathname === "/about" ? "page" : undefined}
-            aria-label="About TypeBlitz"
           >
-            <IconInfoCircle size={16} stroke={1.5} aria-hidden />
+            About
           </Link>
-          <Link
-            href="/changelog"
-            prefetch
-            className={cn(
-              iconButtonClass,
-              pathname === "/changelog" && "text-foreground",
-            )}
-            aria-current={pathname === "/changelog" ? "page" : undefined}
-            aria-label="Changelog"
-          >
-            <IconNotes size={16} stroke={1.5} aria-hidden />
-          </Link>
-          
         </div>
-      </div>
-  
-        <button className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none">
-          
-           <span className="hidden md:block">Code</span>
-   
-        </button>
 
       </div>
     </motion.header>
