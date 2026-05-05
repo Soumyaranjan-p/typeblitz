@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   createContext,
@@ -9,67 +9,66 @@ import {
   useRef,
   useState,
   type ReactNode,
-} from "react"
-import { useMountEffect } from "@/hooks/use-mount-effect"
-import Link from "next/link"
-import { usePathname, useRouter } from "next/navigation"
-import { motion } from "motion/react"
+} from "react";
+import { useMountEffect } from "@/hooks/use-mount-effect";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { motion } from "motion/react";
 
-import { DynamicFavicon } from "@/components/dynamic-favicon"
-import { SettingsPanel } from "@/components/settings-panel"
-import { cn } from "@/lib/utils"
-import { useClickSound } from "@/hooks/use-click-sound"
+import { DynamicFavicon } from "@/components/dynamic-favicon";
+import { SettingsPanel } from "@/components/settings-panel";
+import { cn } from "@/lib/utils";
+import { useClickSound } from "@/hooks/use-click-sound";
 
 interface AppChromeContextValue {
-  settingsOpen: boolean
-  setSettingsOpen: (open: boolean) => void
-  testSettingsOpen: boolean
-  setTestSettingsOpen: (open: boolean) => void
-  typingActive: boolean
-  setTypingActive: (active: boolean) => void
-  homeLogoHandlerRef: React.MutableRefObject<(() => void) | null>
+  settingsOpen: boolean;
+  setSettingsOpen: (open: boolean) => void;
+  testSettingsOpen: boolean;
+  setTestSettingsOpen: (open: boolean) => void;
+  typingActive: boolean;
+  setTypingActive: (active: boolean) => void;
+  homeLogoHandlerRef: React.MutableRefObject<(() => void) | null>;
 }
 
-const AppChromeContext = createContext<AppChromeContextValue | null>(null)
+const AppChromeContext = createContext<AppChromeContextValue | null>(null);
 
 export function useAppChrome() {
-  const ctx = useContext(AppChromeContext)
-  if (!ctx)
-    throw new Error("useAppChrome must be used within AppChrome")
-  return ctx
+  const ctx = useContext(AppChromeContext);
+  if (!ctx) throw new Error("useAppChrome must be used within AppChrome");
+  return ctx;
 }
 
 export function AppChrome({ children }: { children: ReactNode }) {
-  const [settingsOpen, setSettingsOpen] = useState(false)
-  const [testSettingsOpen, setTestSettingsOpen] = useState(false)
-  const [typingActive, setTypingActive] = useState(false)
-  const [keyboardInset, setKeyboardInset] = useState(0)
-  const homeLogoHandlerRef = useRef<(() => void) | null>(null)
-  useClickSound()
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [testSettingsOpen, setTestSettingsOpen] = useState(false);
+  const [typingActive, setTypingActive] = useState(false);
+  const [keyboardInset, setKeyboardInset] = useState(0);
+  const homeLogoHandlerRef = useRef<(() => void) | null>(null);
+  useClickSound();
 
   useEffect(() => {
-    if (typeof window === "undefined") return
-    const vv = window.visualViewport
-    if (!vv) return
-    let baseHeight = vv.height
+    if (typeof window === "undefined") return;
+    const vv = window.visualViewport;
+    if (!vv) return;
+    let baseHeight = vv.height;
     const onResize = () => {
-      const delta = baseHeight - vv.height
+      const delta = baseHeight - vv.height;
       if (delta > 100) {
-        setKeyboardInset(delta)
+        setKeyboardInset(delta);
       } else {
-        baseHeight = Math.max(baseHeight, vv.height)
-        setKeyboardInset(0)
+        baseHeight = Math.max(baseHeight, vv.height);
+        setKeyboardInset(0);
       }
-    }
-    vv.addEventListener("resize", onResize)
-    return () => vv.removeEventListener("resize", onResize)
-  }, [])
+    };
+    vv.addEventListener("resize", onResize);
+    return () => vv.removeEventListener("resize", onResize);
+  }, []);
 
   useMountEffect(() => {
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/sw.js").catch(() => {})
+      navigator.serviceWorker.register("/sw.js").catch(() => {});
     }
-  })
+  });
 
   const value = useMemo(
     () => ({
@@ -82,9 +81,9 @@ export function AppChrome({ children }: { children: ReactNode }) {
       homeLogoHandlerRef,
     }),
     [settingsOpen, testSettingsOpen, typingActive],
-  )
+  );
 
-  const keyboardOpen = keyboardInset > 0
+  const keyboardOpen = keyboardInset > 0;
 
   return (
     <AppChromeContext.Provider value={value}>
@@ -107,47 +106,50 @@ export function AppChrome({ children }: { children: ReactNode }) {
         <SiteHeader />
         {children}
       </motion.div>
-      <SettingsPanel open={settingsOpen} onClose={() => setSettingsOpen(false)} />
+      <SettingsPanel
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+      />
     </AppChromeContext.Provider>
-  )
+  );
 }
 
 function SiteHeader() {
-  const pathname = usePathname()
-  const router = useRouter()
-  const { typingActive, homeLogoHandlerRef } = useAppChrome()
+  const pathname = usePathname();
+  const router = useRouter();
+  const { typingActive, homeLogoHandlerRef } = useAppChrome();
 
-  const isHome = pathname === "/"
-  const dimHeader = isHome && typingActive
+  const isHome = pathname === "/";
+  const dimHeader = isHome && typingActive;
 
-  const [mouseHeaderVisible, setMouseHeaderVisible] = useState(false)
-  const headerTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [mouseHeaderVisible, setMouseHeaderVisible] = useState(false);
+  const headerTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const headerVisible =
-    !isHome || !typingActive || (isHome && typingActive && mouseHeaderVisible)
+    !isHome || !typingActive || (isHome && typingActive && mouseHeaderVisible);
 
   const handleHeaderMouseMove = useCallback(() => {
-    if (!isHome || !typingActive) return
-    setMouseHeaderVisible(true)
-    if (headerTimerRef.current) clearTimeout(headerTimerRef.current)
+    if (!isHome || !typingActive) return;
+    setMouseHeaderVisible(true);
+    if (headerTimerRef.current) clearTimeout(headerTimerRef.current);
     headerTimerRef.current = setTimeout(
       () => setMouseHeaderVisible(false),
       2500,
-    )
-  }, [isHome, typingActive])
+    );
+  }, [isHome, typingActive]);
 
   useMountEffect(() => {
     return () => {
-      if (headerTimerRef.current) clearTimeout(headerTimerRef.current)
-    }
-  })
+      if (headerTimerRef.current) clearTimeout(headerTimerRef.current);
+    };
+  });
 
   function handleLogoClick() {
     if (isHome && homeLogoHandlerRef.current) {
-      homeLogoHandlerRef.current()
-      return
+      homeLogoHandlerRef.current();
+      return;
     }
-    router.push("/")
+    router.push("/");
   }
 
   return (
@@ -158,7 +160,6 @@ function SiteHeader() {
       className="flex shrink-0 justify-center border-b border-border px-6 py-3"
     >
       <div className="flex w-full max-w-5xl items-center justify-between">
-
         {/* Left - Logo */}
         <div className="flex items-center gap-3">
           {isHome ? (
@@ -179,20 +180,24 @@ function SiteHeader() {
           )}
         </div>
 
-        {/* Right - Navigation */}
+        
         <div className="flex items-center gap-6 text-sm text-muted-foreground">
-          <Link
-            href="/about"
-            className={cn(
-              "hover:text-foreground transition-colors",
-              pathname === "/about" && "text-foreground"
-            )}
-          >
-            About
-          </Link>
+       <Link
+  href="/about"
+  className={cn(
+    "group rounded-full px-4 py-2 text-2xl font-medium tracking-tighter transition-all duration-300",
+    pathname === "/about"
+      ? "bg-white/5 text-[#e8e6e1] shadow-md"
+      : "text-[#9e9a93] hover:text-[#e8e6e1]"
+  )}
+>
+  <span className="relative inline-block">
+    About
+    <span className="absolute left-1/2 bottom-0 h-[2px] w-0 -translate-x-1/2 bg-current transition-all duration-300 ease-out group-hover:w-full" />
+  </span>
+</Link>
         </div>
-
       </div>
     </motion.header>
-  )
+  );
 }

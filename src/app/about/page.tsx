@@ -15,26 +15,46 @@ const FEATURES = [
 
 export default function AboutPage() {
   return (
-    <main className="min-h-[calc(100dvh-64px)] bg-[radial-gradient(circle_at_50%_10%,rgba(0,229,255,0.14),transparent_28%),linear-gradient(135deg,#030408_0%,#0b0618_48%,#06172e_100%)] px-5 py-20 text-white lg:px-8">
-      <section className="mx-auto max-w-6xl">
-        <p className="mb-4 text-xs font-semibold uppercase tracking-[0.28em] text-cyan-200/70">
+    <main className="min-h-screen bg-[#050505] px-6 py-24 text-[#e8e8e3] antialiased selection:bg-white/10 md:px-12 lg:px-24">
+      <section className="mx-auto max-w-5xl">
+        {/* Eyebrow */}
+        <p className="mb-8 text-[11px] font-semibold uppercase tracking-[0.25em] text-[#555550]">
           Precision typing, quietly designed
         </p>
-        <h1 className="max-w-3xl text-5xl font-bold tracking-wide md:text-7xl">
+
+        {/* Headline */}
+        <h1 className="max-w-3xl text-5xl font-semibold leading-[1.05] tracking-tight text-[#f5f5f0] md:text-7xl lg:text-8xl">
           Why Typeblitz?
         </h1>
-        <p className="mt-6 max-w-2xl text-lg font-medium leading-8 text-slate-300">
-          Typeblitz is built for speed, accuracy, and distraction-free practice. It gives you a premium workspace for focused repetitions without turning the typing test into clutter.
+
+        {/* Highlighted value proposition */}
+        <div className="mt-10 max-w-xl border-l border-white/15 pl-6">
+          <p className="text-lg font-medium leading-relaxed text-[#f5f5f0] md:text-xl">
+            A premium workspace for focused repetitions. No clutter, no noise — just you and the words.
+          </p>
+        </div>
+
+        {/* Supporting paragraph */}
+        <p className="mt-8 max-w-xl text-base leading-7 text-[#73736e]">
+          Typeblitz is built for speed, accuracy, and distraction-free practice. Every interaction is tuned to keep you in flow, from the first keystroke to the final stat.
         </p>
 
-        <div className="mt-12 grid gap-4 md:grid-cols-3">
-          {FEATURES.map((feature) => (
-            <article
-              key={feature.title}
-              className="rounded-2xl border border-white/10 bg-white/[0.055] p-7 shadow-[0_18px_70px_rgba(0,0,0,0.24)] backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-cyan-300/25 hover:bg-white/[0.08] hover:shadow-[0_24px_90px_rgba(0,229,255,0.10)]"
-            >
-              <h2 className="text-xl font-bold tracking-wide">{feature.title}</h2>
-              <p className="mt-4 text-sm font-medium leading-6 text-slate-400">{feature.body}</p>
+        {/* Subtle divider */}
+        <div className="mt-20 h-px w-16 bg-white/10" />
+
+        {/* Features */}
+        <div className="mt-16 grid gap-14 md:grid-cols-3 md:gap-10">
+          {FEATURES.map((feature, index) => (
+            <article key={feature.title}>
+              <span className="font-mono text-xs text-[#3a3a35]">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <h2 className="mt-4 text-base font-semibold tracking-tight text-[#e8e8e3]">
+                {feature.title}
+              </h2>
+              <p className="mt-3 text-sm leading-6 text-[#73736e]">
+                {feature.body}
+              </p>
             </article>
           ))}
         </div>
